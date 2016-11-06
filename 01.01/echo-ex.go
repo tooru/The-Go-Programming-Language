@@ -6,7 +6,7 @@ import (
     "strings"
 )
 
-func main()  {
+func main() {
     fmt.Println(os.Args[0])
     fmt.Println(strings.Join(os.Args[1:], " "))
 }
