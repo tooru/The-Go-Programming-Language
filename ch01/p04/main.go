@@ -16,9 +16,11 @@ import (
 
 func main() {
 	counts := make(map[string]int)
-	files := os.Args[1:]
+    dupFiles := make(map[string]map[string]bool)
+
+    files := os.Args[1:]
 	if len(files) == 0 {
-		countLines(os.Stdin, counts)
+		countLines("-", os.Stdin, counts, dupFiles)
 	} else {
 		for _, arg := range files {
 			f, err := os.Open(arg)
@@ -26,23 +28,41 @@ func main() {
 				fmt.Fprintf(os.Stderr, "dup2: %v\n", err)
 				continue
 			}
-			countLines(f, counts)
+			countLines(arg, f, counts, dupFiles)
 			f.Close()
 		}
 	}
 	for line, n := range counts {
 		if n > 1 {
-			fmt.Printf("%d\t%s\n", n, line)
+			fmt.Printf("%d\t%s\t%s\n", n, joinKeys(dupFiles[line]), line)
 		}
 	}
 }
 
-func countLines(f *os.File, counts map[string]int) {
+func countLines(file string, f *os.File, counts map[string]int, files map[string]map[string]bool) {
 	input := bufio.NewScanner(f)
 	for input.Scan() {
-		counts[input.Text()]++
+        text := input.Text()
+		counts[text]++
+        fs := files[text]
+        if (fs == nil) {
+            fs = make(map[string]bool)
+            files[text] = fs
+        }
+        fs[file] = true
 	}
 	// NOTE: ignoring potential errors from input.Err()
+}
+
+func joinKeys(set map[string]bool) string {
+    sep := ""
+    s := ""
+
+    for k, _ := range set {
+        s += sep + k
+        sep = " "
+    }
+    return s
 }
 
 //!-
