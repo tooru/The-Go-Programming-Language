@@ -81,3 +81,12 @@ func BenchmarkPopCountByShifting(b *testing.B) {
 // BenchmarkBitCount-4                  500000000         3.36 ns/op
 // BenchmarkPopCountByClearing-4        50000000         34.3 ns/op
 // BenchmarkPopCountByShifting-4        20000000        108 ns/op
+
+// 1.4GHz Interl Core i5
+// $ go version
+// go version go1.7.3 darwin/amd64
+// $ go test -cpu=4 -bench=.
+// BenchmarkPopCount-4                  2000000000         0.45 ns/op
+// BenchmarkBitCount-4                  2000000000         0.45 ns/op
+// BenchmarkPopCountByClearing-4        30000000        41.8 ns/op
+// BenchmarkPopCountByShifting-4        20000000       116 ns/op
