@@ -49,6 +49,6 @@ func printUnit(s string) {
         m, p02_unitconv.MToF(m), fe, p02_unitconv.FToM(fe),
         kg, p02_unitconv.KgToP(kg), p, p02_unitconv.PToKg(p),
     )
-}    
+}
 
 //!-
