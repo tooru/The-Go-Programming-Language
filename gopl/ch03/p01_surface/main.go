@@ -17,7 +17,7 @@ const (
 	cells         = 100                 // number of grid cells
 	xyrange       = 30.0                // axis ranges (-xyrange..+xyrange)
 	xyscale       = width / 2 / xyrange // pixels per x or y unit
-	zscale        = height * 0.4        // pixels per z unit
+	zscale        = height * 0.8        // pixels per z unit
 	angle         = math.Pi / 6         // angle of x, y axes (=30°)
 )
 
@@ -29,10 +29,22 @@ func main() {
 		"width='%d' height='%d'>", width, height)
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
-			ax, ay := corner(i+1, j)
-			bx, by := corner(i, j)
-			cx, cy := corner(i, j+1)
-			dx, dy := corner(i+1, j+1)
+			ok, ax, ay := corner(i+1, j)
+            if !ok {
+                continue
+            }
+			ok, bx, by := corner(i, j)
+            if !ok {
+                continue
+            }
+			ok, cx, cy := corner(i, j+1)
+            if !ok {
+                continue
+            }
+			ok, dx, dy := corner(i+1, j+1)
+            if !ok {
+                continue
+            }
 			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
 				ax, ay, bx, by, cx, cy, dx, dy)
 		}
@@ -40,7 +52,7 @@ func main() {
 	fmt.Println("</svg>")
 }
 
-func corner(i, j int) (float64, float64) {
+func corner(i, j int) (bool, float64, float64) {
 	// Find point (x,y) at corner of cell (i,j).
 	x := xyrange * (float64(i)/cells - 0.5)
 	y := xyrange * (float64(j)/cells - 0.5)
@@ -51,7 +63,10 @@ func corner(i, j int) (float64, float64) {
 	// Project (x,y,z) isometrically onto 2-D SVG canvas (sx,sy).
 	sx := width/2 + (x-y)*cos30*xyscale
 	sy := height/2 + (x+y)*sin30*xyscale - z*zscale
-	return sx, sy
+
+    bounded := (sx >= 0 && sx <= width) &&
+               (sy >= 0 && sy <= height)
+	return bounded, sx, sy
 }
 
 func f(x, y float64) float64 {
