@@ -5,8 +5,6 @@ import (
     "crypto/sha256"
 )
 
-var pc int
-
 func popCount(x byte) int {
     return int((x & 0x80) >> 7 + 
                (x & 0x40) >> 6 + 
