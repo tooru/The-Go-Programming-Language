@@ -36,4 +36,5 @@ func TestRotate(t *testing.T) {
     assertEquals(t, []int{0, 1, 2}, rotate([]int{0, 1, 2}, 0))
     assertEquals(t, []int{2, 0, 1}, rotate([]int{0, 1, 2}, 1))
     assertEquals(t, []int{1, 2, 0}, rotate([]int{0, 1, 2}, 2))
+    assertEquals(t, []int{0, 1, 2}, rotate([]int{0, 1, 2}, 3))
 }
