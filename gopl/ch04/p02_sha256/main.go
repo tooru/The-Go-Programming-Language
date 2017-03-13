@@ -16,14 +16,14 @@ func main() {
     flag.IntVar(&length, "l", 256, "specify the length of sha. 256, 384, 512")
     flag.Parse()
 
-    var digest hash.Hash
+    var hash hash.Hash
 
     if length == 256 {
-        digest = sha256.New()
+        hash = sha256.New()
     } else if length == 384 {
-        digest = sha512.New384()
+        hash = sha512.New384()
     } else if length == 512 {
-        digest = sha512.New()
+        hash = sha512.New()
     } else {
         fmt.Fprintf(os.Stderr, "Unrecognized algorithm: %d\n", length)
         flag.PrintDefaults()
@@ -42,7 +42,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "read error: %v\n", err)
 			os.Exit(1)
         }
-        digest.Write(buf[:len])
+        hash.Write(buf[:len])
     }
-    fmt.Printf("%x\n", digest.Sum(nil))
+    fmt.Printf("%x\n", hash.Sum(nil))
 }
