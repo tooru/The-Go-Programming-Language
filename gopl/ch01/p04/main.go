@@ -16,9 +16,9 @@ import (
 
 func main() {
 	counts := make(map[string]int)
-    dupFiles := make(map[string]map[string]bool)
+	dupFiles := make(map[string]map[string]bool)
 
-    files := os.Args[1:]
+	files := os.Args[1:]
 	if len(files) == 0 {
 		countLines("-", os.Stdin, counts, dupFiles)
 	} else {
@@ -42,27 +42,27 @@ func main() {
 func countLines(file string, f *os.File, counts map[string]int, files map[string]map[string]bool) {
 	input := bufio.NewScanner(f)
 	for input.Scan() {
-        text := input.Text()
+		text := input.Text()
 		counts[text]++
-        fs := files[text]
-        if (fs == nil) {
-            fs = make(map[string]bool)
-            files[text] = fs
-        }
-        fs[file] = true
+		fs := files[text]
+		if fs == nil {
+			fs = make(map[string]bool)
+			files[text] = fs
+		}
+		fs[file] = true
 	}
 	// NOTE: ignoring potential errors from input.Err()
 }
 
 func joinKeys(set map[string]bool) string {
-    sep := ""
-    s := ""
+	sep := ""
+	s := ""
 
-    for k, _ := range set {
-        s += sep + k
-        sep = " "
-    }
-    return s
+	for k, _ := range set {
+		s += sep + k
+		sep = " "
+	}
+	return s
 }
 
 //!-

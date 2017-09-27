@@ -30,21 +30,21 @@ func main() {
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
 			ok, ax, ay := corner(i+1, j)
-            if !ok {
-                continue
-            }
+			if !ok {
+				continue
+			}
 			ok, bx, by := corner(i, j)
-            if !ok {
-                continue
-            }
+			if !ok {
+				continue
+			}
 			ok, cx, cy := corner(i, j+1)
-            if !ok {
-                continue
-            }
+			if !ok {
+				continue
+			}
 			ok, dx, dy := corner(i+1, j+1)
-            if !ok {
-                continue
-            }
+			if !ok {
+				continue
+			}
 			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
 				ax, ay, bx, by, cx, cy, dx, dy)
 		}
@@ -64,8 +64,8 @@ func corner(i, j int) (bool, float64, float64) {
 	sx := width/2 + (x-y)*cos30*xyscale
 	sy := height/2 + (x+y)*sin30*xyscale - z*zscale
 
-    bounded := (sx >= 0 && sx <= width) &&
-               (sy >= 0 && sy <= height)
+	bounded := (sx >= 0 && sx <= width) &&
+		(sy >= 0 && sy <= height)
 	return bounded, sx, sy
 }
 

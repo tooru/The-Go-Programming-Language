@@ -1,15 +1,15 @@
 package main
 
 import (
-    "fmt"
+	"fmt"
 )
 
 func main() {
-    var _, _, c = toupleFunction()
+	var _, _, c = toupleFunction()
 
-    fmt.Println(c);
+	fmt.Println(c)
 }
 
 func toupleFunction() (string, string, string) {
-    return "a", "b", "c"
+	return "a", "b", "c"
 }

@@ -34,7 +34,7 @@ func main() {
 			cx, cy, _ := corner(i, j+1)
 			dx, dy, _ := corner(i+1, j+1)
 
-            color := fmt.Sprintf("%02x00%02x", int(math.Min(255, 255*(z+1)/2)), int(math.Max(0, 255*(1-(z+1)/2))))
+			color := fmt.Sprintf("%02x00%02x", int(math.Min(255, 255*(z+1)/2)), int(math.Max(0, 255*(1-(z+1)/2))))
 
 			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' style='fill:#%s'/>\n",
 				ax, ay, bx, by, cx, cy, dx, dy, color)

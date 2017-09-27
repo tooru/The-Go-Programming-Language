@@ -9,7 +9,7 @@ package main
 
 import (
 	"bufio"
-//	"errors"
+	//	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -17,7 +17,7 @@ import (
 )
 
 func CountChar(rd io.Reader) (map[string]int, error) {
-	counts := make(map[string]int)    // counts of Unicode characters
+	counts := make(map[string]int) // counts of Unicode characters
 
 	in := bufio.NewReader(rd)
 	for {
@@ -27,39 +27,39 @@ func CountChar(rd io.Reader) (map[string]int, error) {
 		}
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "charcount: %v\n", err)
-            return nil, err
+			return nil, err
 		}
-        switch {
-        case unicode.IsControl(r):
-            counts["control"]++
-        case unicode.IsLetter(r):
-            counts["letter"]++
-        case unicode.IsMark(r):
-            counts["mark"]++
-        case unicode.IsNumber(r):
-            counts["number"]++
-        case unicode.IsPunct(r):
-            counts["punct"]++
-        case unicode.IsSpace(r):
-            counts["space"]++
-        case unicode.IsSymbol(r):
-            counts["symbol"]++
-        default:
-            fmt.Printf("%v\n", string(r));
-            counts["other"]++
-            //return nil, errors.New("unknown type: " + string(r))
+		switch {
+		case unicode.IsControl(r):
+			counts["control"]++
+		case unicode.IsLetter(r):
+			counts["letter"]++
+		case unicode.IsMark(r):
+			counts["mark"]++
+		case unicode.IsNumber(r):
+			counts["number"]++
+		case unicode.IsPunct(r):
+			counts["punct"]++
+		case unicode.IsSpace(r):
+			counts["space"]++
+		case unicode.IsSymbol(r):
+			counts["symbol"]++
+		default:
+			fmt.Printf("%v\n", string(r))
+			counts["other"]++
+			//return nil, errors.New("unknown type: " + string(r))
 		}
 	}
-    return counts, nil
+	return counts, nil
 }
 
 func main() {
-    counts, err := CountChar(os.Stdin)
+	counts, err := CountChar(os.Stdin)
 
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "charcount: %v\n", err)
-        os.Exit(1)
-    }
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "charcount: %v\n", err)
+		os.Exit(1)
+	}
 
 	fmt.Printf("category\tcount\n")
 	for c, n := range counts {

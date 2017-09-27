@@ -23,8 +23,8 @@ import (
 import (
 	"log"
 	"net/http"
+	"strconv"
 	"time"
-    "strconv"
 )
 
 //!+main
@@ -45,17 +45,17 @@ func main() {
 	if len(os.Args) > 1 && os.Args[1] == "web" {
 		//!+http
 		handler := func(w http.ResponseWriter, r *http.Request) {
-            v, ok := r.Form["cycles"]
+			v, ok := r.Form["cycles"]
 
-            cycles := defaultCycles
-            if ok {
-                var err error;
-                cycles, err = strconv.Atoi(v[0])
-                if err != nil {
-                    log.Fatalf("strconv.Atoi failed: %v", err)
-                    return
-                }
-            }
+			cycles := defaultCycles
+			if ok {
+				var err error
+				cycles, err = strconv.Atoi(v[0])
+				if err != nil {
+					log.Fatalf("strconv.Atoi failed: %v", err)
+					return
+				}
+			}
 
 			lissajous(w, cycles)
 		}
@@ -70,17 +70,17 @@ func main() {
 
 func lissajous(out io.Writer, cycles int) {
 	const (
-//		cycles  = 5     // number of complete x oscillator revolutions
+		//		cycles  = 5     // number of complete x oscillator revolutions
 		res     = 0.001 // angular resolution
 		size    = 100   // image canvas covers [-size..+size]
 		nframes = 64    // number of animation frames
 		delay   = 8     // delay between frames in 10ms units
-    )
-    for i := 0; i < 16; i++ {
-        for j := 0; j < 16; j++ {
-            palette = append(palette, color.RGBA{uint8(i * 16), uint8(j * 16), 0x77, 0xff})
-        }
-    }
+	)
+	for i := 0; i < 16; i++ {
+		for j := 0; j < 16; j++ {
+			palette = append(palette, color.RGBA{uint8(i * 16), uint8(j * 16), 0x77, 0xff})
+		}
+	}
 	freq := rand.Float64() * 3.0 // relative frequency of y oscillator
 	anim := gif.GIF{LoopCount: nframes}
 	phase := 0.0 // phase difference
@@ -90,10 +90,10 @@ func lissajous(out io.Writer, cycles int) {
 		for t := 0.0; t < float64(cycles)*2*math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
-            a := int((x + 1) / 2 * 16)
-            b := int((y + 1) / 2 * 16)
+			a := int((x + 1) / 2 * 16)
+			b := int((y + 1) / 2 * 16)
 			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
-				uint8(a * 16 + b))
+				uint8(a*16+b))
 		}
 		phase += 0.1
 		anim.Delay = append(anim.Delay, delay)

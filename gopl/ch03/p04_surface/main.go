@@ -8,71 +8,71 @@
 package main
 
 import (
-	"io"
 	"fmt"
+	"io"
 	"log"
-    "math"
+	"math"
 	"net/http"
-    "strconv"
+	"strconv"
 )
 
 const (
-	defaultWidth  = 600                 // canvas size in pixels
+	defaultWidth  = 600 // canvas size in pixels
 	defaultHeight = 320
-	cells         = 100                 // number of grid cells
-	xyrange       = 30.0                // axis ranges (-xyrange..+xyrange)
-	angle         = math.Pi / 6         // angle of x, y axes (=30°)
+	cells         = 100         // number of grid cells
+	xyrange       = 30.0        // axis ranges (-xyrange..+xyrange)
+	angle         = math.Pi / 6 // angle of x, y axes (=30°)
 )
 
 var sin30, cos30 = math.Sin(angle), math.Cos(angle) // sin(30°), cos(30°)
 
 type cornerParams struct {
-    width   float64
-    height  float64
-    xyscale float64
-    zscale  float64
+	width   float64
+	height  float64
+	xyscale float64
+	zscale  float64
 }
 
 //!+main
 
 func main() {
-    handler := func(w http.ResponseWriter, r *http.Request) {
-        if err := r.ParseForm(); err != nil {
-            log.Fatal(err)
-        }
-        width, ok := getFloatParam(r, "width", defaultWidth)
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		if err := r.ParseForm(); err != nil {
+			log.Fatal(err)
+		}
+		width, ok := getFloatParam(r, "width", defaultWidth)
 
-        if !ok {
-            return
-        }
+		if !ok {
+			return
+		}
 
-        height, ok := getFloatParam(r, "height", defaultHeight)
-        if !ok {
-            return
-        }
+		height, ok := getFloatParam(r, "height", defaultHeight)
+		if !ok {
+			return
+		}
 
-        w.Header().Set("Content-Type", "image/svg+xml")
+		w.Header().Set("Content-Type", "image/svg+xml")
 
-        surface(w, width, height)
-    }
-    http.HandleFunc("/", handler)
-    log.Fatal(http.ListenAndServe("localhost:8000", nil))
+		surface(w, width, height)
+	}
+	http.HandleFunc("/", handler)
+	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
 
 func getFloatParam(r *http.Request, key string, defaultValue float64) (float64, bool) {
-    v, ok := r.Form[key]
+	v, ok := r.Form[key]
 
-    if !ok {
-        log.Printf("no key: %s", key)
-        return defaultValue, true
-    }
+	if !ok {
+		log.Printf("no key: %s", key)
+		return defaultValue, true
+	}
 
-    value, err := strconv.ParseFloat(v[0], 64)
-    if err != nil {
-        log.Fatalf("strconv.Atoi failed: %v", err)
-        return 0, false
-    }
-    return value, true
+	value, err := strconv.ParseFloat(v[0], 64)
+	if err != nil {
+		log.Fatalf("strconv.Atoi failed: %v", err)
+		return 0, false
+	}
+	return value, true
 }
 
 func surface(w io.Writer, width float64, height float64) {
@@ -80,12 +80,12 @@ func surface(w io.Writer, width float64, height float64) {
 		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
 		"width='%d' height='%d'>", width, height)
 
-    params := new(cornerParams)
+	params := new(cornerParams)
 
-    params.width   = width
-    params.height  = height
-	params.xyscale = width / 2 / xyrange   // pixels per x or y unit
-	params.zscale  = float64(height) * 0.4 // pixels per z unit
+	params.width = width
+	params.height = height
+	params.xyscale = width / 2 / xyrange  // pixels per x or y unit
+	params.zscale = float64(height) * 0.4 // pixels per z unit
 
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {

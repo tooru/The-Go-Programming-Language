@@ -1,13 +1,13 @@
 package main
 
 import (
-    "fmt"
+	"fmt"
 )
 
 func main() {
-    const float256constant = 1e+100 // 1e+100000
+	const float256constant = 1e+100 // 1e+100000
 
-    var f = float256constant
+	var f = float256constant
 
-    fmt.Println(f)
+	fmt.Println(f)
 }

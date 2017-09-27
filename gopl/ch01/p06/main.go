@@ -59,11 +59,11 @@ func lissajous(out io.Writer) {
 		nframes = 64    // number of animation frames
 		delay   = 8     // delay between frames in 10ms units
 	)
-    for i := 0; i < 16; i++ {
-        for j := 0; j < 16; j++ {
-            palette = append(palette, color.RGBA{uint8(i * 16), uint8(j * 16), 0x77, 0xff})
-        }
-    }
+	for i := 0; i < 16; i++ {
+		for j := 0; j < 16; j++ {
+			palette = append(palette, color.RGBA{uint8(i * 16), uint8(j * 16), 0x77, 0xff})
+		}
+	}
 	freq := rand.Float64() * 3.0 // relative frequency of y oscillator
 	anim := gif.GIF{LoopCount: nframes}
 	phase := 0.0 // phase difference
@@ -73,10 +73,10 @@ func lissajous(out io.Writer) {
 		for t := 0.0; t < cycles*2*math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
-            a := int((x + 1) / 2 * 16)
-            b := int((y + 1) / 2 * 16)
+			a := int((x + 1) / 2 * 16)
+			b := int((y + 1) / 2 * 16)
 			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
-				uint8(a * 16 + b))
+				uint8(a*16+b))
 		}
 		phase += 0.1
 		anim.Delay = append(anim.Delay, delay)
